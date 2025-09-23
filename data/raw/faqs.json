@@ -1,0 +1,59 @@
+[
+  {
+    "question": "Name of the hospital?",
+    "answer": "The hospital is named 'Cityville General Hospital'."
+  },
+  {
+    "question":"Location of the hospital?",
+    "answer":"The hospital is located at 123 Health Street, Cityville."
+  },
+  
+  {
+    "question": "what are specialties available?",
+    "answer": "We offer a wide range of specialties including Cardiology, Neurology, Orthopedics, Pediatrics, and more."
+  },
+  {
+    "question": "What are the hospital's COVID-19 protocols?",
+    "answer": "We follow all CDC guidelines, including mask mandates and social distancing measures."
+  },
+  {
+    "question": "Hospital visiting hours?",
+    "answer": "Visiting hours are from 10:00 AM to 8:00 PM daily."
+  },
+  {
+    "question": "How do I schedule an appointment with a doctor?",
+    "answer": "You can schedule an appointment via our website, mobile app, or by calling our appointment desk."
+  },
+  {
+    "question": "Do you have emergency services available 24/7?",
+    "answer": "Yes, our emergency department operates 24/7 for urgent medical care."
+  },
+  {
+    "question": "What insurance plans are accepted?",
+    "answer": "We accept most major insurance providers. Please check our insurance page or call for specific queries."
+  },
+  {
+    "question": "Doctors with their specialties?",
+    "answer":"'Dr.Simon Lee': 'Cardiologist', 'Dr.Alice Wong': 'Neurologist', 'Dr.Raj Patel': 'Orthopedic Surgeon', 'Dr.Maria Garcia': 'Pediatrician', 'Dr.James Smith': 'General Surgeon', 'Dr.Linda Brown': 'Dermatologist', 'Dr.Michael Johnson': 'Psychiatrist', 'Dr.Sarah Davis': 'Gynecologist', 'Dr.William Martinez': 'Oncologist', 'Dr.Emily Wilson': 'Endocrinologist', 'Dr.David Anderson': 'Urologist', 'Dr.Jennifer Taylor': 'Rheumatologist', 'Dr.Richard Thomas': 'Gastroenterologist', 'Dr.Karen Moore': 'Pulmonologist', 'Dr.Joseph Jackson': 'Nephrologist'"
+  },
+    {
+    "question": "How can I get my medical reports?",
+    "answer": "Medical reports can be accessed through our patient portal online, or requested at the medical records department."
+  },
+  {
+    "question": "Is there a pharmacy inside the hospital?",
+    "answer": "Yes, we have an in-house pharmacy open from 8:00 AM to 10:00 PM."
+  },
+  {
+    "question": "Do you offer telemedicine consultations?",
+    "answer": "Yes, telemedicine consultations are available. You can book an online consultation through our website or app."
+  },
+  {
+    "question": "Are visitors allowed in ICU?",
+    "answer": "ICU visits are restricted for patient safety. Only authorized family members are allowed, with permission from medical staff."
+  },
+  {
+    "question": "How do I contact the hospital?",
+    "answer": "You can contact us by phone at (123) 456-7890, email at info@hospital.com, or via our contact form on the website."
+  }
+]

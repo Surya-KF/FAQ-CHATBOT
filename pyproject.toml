@@ -1,0 +1,84 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hospital-faq-chatbot"
+version = "1.0.0"
+description = "A conversational FAQ chatbot for hospitals using LangChain, Gemini 2.5 Flash, and ChromaDB"
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [
+    {name = "Hospital FAQ Chatbot Team"},
+]
+keywords = ["chatbot", "FAQ", "hospital", "langchain", "gemini", "chromadb"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Healthcare Industry",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+
+dependencies = [
+    "fastapi>=0.104.1",
+    "uvicorn[standard]>=0.24.0",
+    "langchain>=0.1.0",
+    "langchain-community>=0.0.10",
+    "langchain-google-genai>=0.0.6",
+    "google-generativeai>=0.3.2",
+    "chromadb>=0.4.22",
+    "onnxruntime>=1.22.1",
+    "streamlit>=1.29.0",
+    "pandas>=2.1.4",
+    "numpy==1.26.4",
+    "joblib==1.5.2",
+    "networkx==3.5",
+    "regex==2025.9.18",
+    "safetensors==0.6.2",
+    "scikit-learn==1.7.2",
+    "scipy==1.16.2",
+    "sentence-transformers==5.1.0",
+    "threadpoolctl==3.6.0",
+    "torch==2.8.0",
+    "transformers==4.56.2",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.2",
+    "pydantic-settings>=2.1.0",
+    "httpx>=0.25.2",
+    "aiohttp>=3.9.1",
+]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "streamlit_app", "scripts"]
+
+[project.urls]
+Homepage = "https://github.com/hospital/faq-chatbot"
+Documentation = "https://github.com/hospital/faq-chatbot#readme"
+Repository = "https://github.com/hospital/faq-chatbot.git"
+Issues = "https://github.com/hospital/faq-chatbot/issues"
+
+[project.scripts]
+chatbot-api = "app.main:main"
+chatbot-ui = "streamlit_app.app:main"
+preprocess-data = "scripts.preprocess:main"
+index-documents = "app.indexing:main"
+
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

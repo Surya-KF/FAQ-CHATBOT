@@ -1,0 +1,100 @@
+# Docker Compose configuration for Hospital FAQ Chatbot
+# This file orchestrates the entire application stack
+
+version: '3.8'
+
+services:
+  # FastAPI Backend Service
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hospital-faq-api
+    ports:
+      - "8000:8000"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - CHROMA_PERSIST_DIRECTORY=/app/chroma_db
+      - DATA_RAW_PATH=/app/data/raw
+      - DATA_PROCESSED_PATH=/app/data/processed
+      - APP_HOST=0.0.0.0
+      - APP_PORT=8000
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./data:/app/data
+      - chroma_data:/app/chroma_db
+      - ./logs:/app/logs
+    networks:
+      - chatbot-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    command: ["python", "app/main.py"]
+
+  # Streamlit Frontend Service
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hospital-faq-frontend
+    ports:
+      - "8501:8501"
+    environment:
+      - STREAMLIT_SERVER_PORT=8501
+      - STREAMLIT_SERVER_ADDRESS=0.0.0.0
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - chatbot-network
+    restart: unless-stopped
+    command: ["streamlit", "run", "streamlit_app/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+
+  # Optional: Data preprocessing service (run once)
+  preprocessor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hospital-faq-preprocessor
+    volumes:
+      - ./data:/app/data
+    networks:
+      - chatbot-network
+    profiles:
+      - preprocessing
+    command: ["python", "scripts/preprocess.py"]
+
+  # Optional: Document indexing service (run once or on-demand)
+  indexer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: hospital-faq-indexer
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - CHROMA_PERSIST_DIRECTORY=/app/chroma_db
+      - DATA_RAW_PATH=/app/data/raw
+    volumes:
+      - ./data:/app/data
+      - chroma_data:/app/chroma_db
+    networks:
+      - chatbot-network
+    profiles:
+      - indexing
+    command: ["python", "app/indexing.py"]
+
+# Named volumes for data persistence
+volumes:
+  chroma_data:
+    name: hospital-faq-chroma-db
+    driver: local
+
+# Network for service communication
+networks:
+  chatbot-network:
+    name: hospital-faq-network
+    driver: bridge

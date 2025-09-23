@@ -1,0 +1,46 @@
+# FastAPI and web framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+
+# LangChain ecosystem
+langchain==0.1.0
+langchain-community==0.0.10
+langchain-google-genai==0.0.6
+
+# Google Generative AI
+google-generativeai==0.3.2
+
+# Vector database
+chromadb==0.4.22
+
+# Streamlit for frontend
+streamlit==1.29.0
+
+# Data processing
+pandas==2.1.4
+numpy==1.26.4
+joblib==1.5.2
+networkx==3.5
+regex==2025.9.18
+safetensors==0.6.2
+scikit-learn==1.7.2
+scipy==1.16.2
+sentence-transformers==5.1.0
+threadpoolctl==3.6.0
+torch==2.8.0
+transformers==4.56.2
+
+# Environment management
+python-dotenv==1.0.0
+
+# Logging and utilities
+pydantic==2.5.2
+pydantic-settings==2.1.0
+
+# HTTP requests
+httpx==0.25.2
+aiohttp==3.9.1
+
+# ONNX Runtime for ChromaDB embeddings
+# Note: Requires Visual C++ Redistributable on Windows
+onnxruntime==1.22.1
