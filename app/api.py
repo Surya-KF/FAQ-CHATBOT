@@ -11,9 +11,12 @@ This module defines all REST API endpoints including:
 import logging
 import time
 import uuid
+import os
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from fastapi.responses import JSONResponse
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from app.models import (
     ChatRequest, ChatResponse, SearchRequest, SearchResponse,
     HealthCheckResponse, SystemStatus, MemoryStats, ErrorResponse,
@@ -29,8 +32,25 @@ from app.config import settings, validate_configuration
 # Configure logging
 logger = logging.getLogger(__name__)
 
+security = HTTPBearer()
+
+def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    # Load secret token from environment/config
+    valid_token = getattr(settings, "api_secret_token", None) or os.getenv("API_SECRET_TOKEN")
+    if not valid_token:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="API secret token not configured",
+        )
+    if credentials.credentials != valid_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or missing authentication token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
 # Create API router
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(verify_token)])
 
 
 @router.post("/chat", response_model=ChatResponse)
@@ -406,3 +426,9 @@ def get_api_router() -> APIRouter:
         APIRouter: Configured router with all endpoints
     """
     return router
+
+# Example: Secure an endpoint
+# @router.get("/secure-endpoint", dependencies=[Depends(verify_token)])
+# async def secure_endpoint():
+#     return {"message": "This is a protected endpoint."}
+# To secure all endpoints, add dependencies=[Depends(verify_token)] to each route or to the router.

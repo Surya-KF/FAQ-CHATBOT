@@ -15,9 +15,15 @@ import time
 from typing import List, Dict, Any, Optional
 from datetime import datetime
 import uuid
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # API Configuration
 API_BASE_URL = "http://localhost:8000/api/v1"
+API_SECRET_TOKEN = os.getenv("API_SECRET_TOKEN")
 
 def init_session_state():
     """Initialize Streamlit session state variables."""
@@ -45,11 +51,13 @@ def make_api_request(endpoint: str, method: str = "GET", data: Dict = None) -> O
     """
     try:
         url = f"{API_BASE_URL}{endpoint}"
-        
+        headers = {}
+        if API_SECRET_TOKEN:
+            headers["Authorization"] = f"Bearer {API_SECRET_TOKEN}"
         if method.upper() == "POST":
-            response = requests.post(url, json=data, timeout=30)
+            response = requests.post(url, json=data, headers=headers, timeout=30)
         elif method.upper() == "GET":
-            response = requests.get(url, timeout=30)
+            response = requests.get(url, headers=headers, timeout=30)
         else:
             st.error(f"Unsupported HTTP method: {method}")
             return None
@@ -180,6 +188,10 @@ def display_sources(sources: List[Dict]) -> None:
                 st.json(metadata)
 
 
+def set_session_id_in_url(session_id: str):
+    """Update the browser URL to include the active session ID as a query parameter."""
+    st.experimental_set_query_params(session_id=session_id)
+
 def chat_interface():
     """Main chat interface."""
     st.header("💬 Hospital FAQ Chatbot")
@@ -189,6 +201,7 @@ def chat_interface():
     
     with col1:
         st.caption(f"Session ID: {st.session_state.session_id[:8]}...")
+        set_session_id_in_url(st.session_state.session_id)
     
     with col2:
         if st.button("🗑️ Clear Chat", help="Clear conversation history"):
@@ -402,8 +415,6 @@ def main():
     ### ℹ️ About
     This chatbot helps answer questions about:
     - Hospital services and departments
-                        st.caption(f"Metadata for Source {i}:")
-                        st.json(metadata)
     - Contact information
     - COVID-19 guidelines
     

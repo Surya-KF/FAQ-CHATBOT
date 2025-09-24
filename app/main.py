@@ -1,14 +1,4 @@
-"""
-FastAPI main application for Hospital FAQ Chatbot
-
-This module sets up the FastAPI application with:
-- API configuration and middleware
-- CORS handling
-- Error handling
-- Logging configuration
-- Application startup and shutdown events
-"""
-
+#import necessary libraries
 import logging
 import os
 import sys
@@ -144,7 +134,6 @@ async def log_requests(request: Request, call_next):
 async def http_exception_handler(request: Request, exc: HTTPException):
     """
     Handle HTTP exceptions.
-    
     Args:
         request: HTTP request
         exc: HTTP exception
@@ -167,16 +156,6 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 @app.exception_handler(RequestValidationError)
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
-    """
-    Handle request validation errors.
-    
-    Args:
-        request: HTTP request
-        exc: Validation exception
-        
-    Returns:
-        JSON error response
-    """
     logger.error(f"Validation Error: {exc.errors()}")
     
     error_response = ErrorResponse(
@@ -257,7 +236,6 @@ def main():
     except Exception as e:
         logger.error(f"Server startup failed: {e}")
         sys.exit(1)
-
 
 if __name__ == "__main__":
     main()
